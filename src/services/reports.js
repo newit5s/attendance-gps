@@ -6,10 +6,9 @@ import {
   getDocs, 
   query, 
   where,
-  orderBy 
+  orderBy
 } from 'firebase/firestore';
 import { db } from './firebase';
-import { WORKING_HOURS } from '../constants/config';
 import { isLateCheckIn, isEarlyCheckOut } from './attendance';
 
 /**

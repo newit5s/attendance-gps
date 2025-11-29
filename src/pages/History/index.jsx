@@ -1,5 +1,5 @@
 // src/pages/History/index.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Calendar, Clock, MapPin, QrCode, Download } from 'lucide-react';
 import { useAuthContext } from '../../context/AuthContext';
 import { getUserAttendances } from '../../services/attendance';
@@ -18,13 +18,9 @@ const History = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [report, setReport] = useState(null);
 
-  useEffect(() => {
-    loadData();
-  }, [user, selectedMonth, selectedYear]);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     if (!user) return;
-    
+
     setLoading(true);
     try {
       const [history, monthReport] = await Promise.all([
@@ -38,7 +34,11 @@ const History = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, selectedMonth, selectedYear]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const handleExportCSV = () => {
     if (!report || !userData) return;

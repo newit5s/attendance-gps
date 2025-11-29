@@ -1,13 +1,12 @@
 // src/components/layout/Sidebar.jsx
 import React from 'react';
-import { 
-  Home, 
-  Clock, 
-  Calendar, 
-  Users, 
-  QrCode, 
-  BarChart3,
-  Settings
+import {
+  Home,
+  Clock,
+  Calendar,
+  Users,
+  QrCode,
+  BarChart3
 } from 'lucide-react';
 import { useAuthContext } from '../../context/AuthContext';
 

@@ -1,6 +1,6 @@
 {
   "name": "attendance-system-v2",
-  "version": "2.0.0",
+  "version": "2.0.3",
   "description": "Hệ thống chấm công GPS & QR Code",
   "private": true,
   "dependencies": {
