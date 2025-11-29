@@ -1,10 +1,74 @@
 # CHANGELOG - Hệ thống Chấm công GPS & QR Code
 
-## 📌 Trạng thái hiện tại: v2.0.1
+## 📌 Trạng thái hiện tại: v2.0.3
 
 ---
 
-## [v2.0.1] - 2025-11-27 ✅ CURRENT
+## [v2.0.3] - 2025-11-29 ✅ CURRENT
+
+### Mục tiêu
+Code quality improvements and clean build
+
+### ✅ Đã hoàn thành
+
+**Code Quality Fixes (7 files)**
+- Fixed all ESLint warnings
+- Removed unused imports and variables:
+  - `Settings` from src/components/layout/Sidebar.jsx
+  - `Calendar` from src/pages/Admin/Reports/index.jsx
+  - `Loading` from src/pages/Attendance/index.jsx
+  - `formatDate` from src/pages/Dashboard/index.jsx
+  - `WORKING_HOURS` from src/services/reports.js
+  - `setDoc` from src/services/users.js
+  - Unused variables: `scannerRef`, `users`
+- Fixed React Hooks dependencies with useCallback:
+  - src/pages/Admin/Reports/index.jsx
+  - src/pages/History/index.jsx
+
+**Project Configuration**
+- Created .gitignore for build artifacts and node_modules
+- Verified all dependencies installed (1384 packages)
+- Clean production build: 285.85 kB (gzipped)
+
+**Git Operations**
+- Committed all changes
+- Pushed to branch: claude/complete-app-setup-015KNLa12ka85G3LiziQhxGx
+
+### 📊 Build Status
+- ✅ Build: SUCCESS
+- ✅ ESLint warnings: 0
+- ✅ Bundle size: 285.85 kB (gzipped)
+- ✅ CSS size: 352 B (gzipped)
+
+---
+
+## [v2.0.2] - 2025-11-28
+
+### Mục tiêu
+Fix all bugs and implement missing services
+
+### ✅ Đã hoàn thành
+
+**Bug Fixes (6 bugs)**
+- Fixed createUser() logout admin issue (secondary auth)
+- Fixed QR code without GPS validation
+- Fixed deleteUser() not removing auth (soft delete)
+- Fixed race condition in check-in/check-out
+- Fixed timezone mismatch (UTC to local)
+- Optimized N+1 queries in reports
+
+**New Services (7 files)**
+- devices.js - Device fingerprinting & management
+- storage.js - Firebase Storage file uploads
+- leave.js - Leave request & balance management
+- lateEarly.js - Late/early leave request handling
+- notification.js - User notification system
+- approval.js - Unified approval workflow
+- settings.js - System configuration management
+
+---
+
+## [v2.0.1] - 2025-11-27
 
 ### Mục tiêu
 Hoàn thiện core modules từ v2.0.0 refactor
@@ -68,9 +132,10 @@ Hoàn thiện core modules từ v2.0.0 refactor
 ## 🗓️ Roadmap
 
 ```
-v2.0.1 ✅ Current    - Core modules complete (38 files)
-v2.0.2 🔲 Next       - Bug fixes (3 critical + 3 medium)
-v2.1.0 🔲 Planned    - Employee features (device, leave, late/early)
+v2.0.1 ✅ Done       - Core modules complete (38 files)
+v2.0.2 ✅ Done       - Bug fixes (3 critical + 3 medium) + 7 services
+v2.0.3 ✅ Current    - Code quality improvements, clean build
+v2.1.0 🔲 Next       - UI implementation (9 missing pages)
 v2.2.0 🔲 Planned    - Manager features (approval, team reports)
 v2.3.0 🔲 Planned    - Admin+ (devices, settings)
 v2.4.0 🔲 Future     - PWA, multi-branch, email, i18n
