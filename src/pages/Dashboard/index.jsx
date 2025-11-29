@@ -7,7 +7,7 @@ import StatCard from '../../components/charts/StatCard';
 import Card from '../../components/common/Card';
 import Badge from '../../components/common/Badge';
 import Loading from '../../components/common/Loading';
-import { formatTime, formatDate } from '../../utils/formatters';
+import { formatTime } from '../../utils/formatters';
 
 const Dashboard = () => {
   const { userData } = useAuthContext();

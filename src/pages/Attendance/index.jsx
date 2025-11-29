@@ -8,7 +8,6 @@ import { verifyQRCode } from '../../services/qrcode';
 import { OFFICE_LOCATION } from '../../constants/config';
 import Button from '../../components/common/Button';
 import Card from '../../components/common/Card';
-import Loading from '../../components/common/Loading';
 import { formatDistance } from '../../utils/formatters';
 
 const Attendance = () => {
@@ -36,7 +35,6 @@ const Attendance = () => {
   const [message, setMessage] = useState({ type: '', text: '' });
   const [processing, setProcessing] = useState(false);
 
-  const scannerRef = useRef(null);
   const html5QrCodeRef = useRef(null);
 
   // Cleanup scanner khi unmount

@@ -1,8 +1,7 @@
 // src/pages/Admin/Reports/index.jsx
-import React, { useState, useEffect } from 'react';
-import { BarChart3, Users, Clock, TrendingUp, Download, Calendar } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { BarChart3, Users, Clock, TrendingUp, Download } from 'lucide-react';
 import { getCompanyStats, getTopEmployees, exportToCSV } from '../../../services/reports';
-import { getAllUsers } from '../../../services/users';
 import { getAllAttendances } from '../../../services/attendance';
 import Card from '../../../components/common/Card';
 import StatCard from '../../../components/charts/StatCard';
@@ -19,11 +18,7 @@ const Reports = () => {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
-  useEffect(() => {
-    loadData();
-  }, [selectedMonth, selectedYear]);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setLoading(true);
     try {
       const [companyStats, top, attendances] = await Promise.all([
@@ -39,11 +34,14 @@ const Reports = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedMonth, selectedYear]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const handleExportCSV = async () => {
     try {
-      const users = await getAllUsers();
       const attendances = await getAllAttendances(1000);
       
       let csv = 'BÁO CÁO CHẤM CÔNG TỔNG HỢP\n';
