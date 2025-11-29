@@ -84,16 +84,32 @@ const Attendance = () => {
   };
 
   // Handle QR Result
+  // ✅ Fixed: Thêm GPS validation cho QR code
   const handleQRResult = async (qrContent) => {
     setProcessing(true);
     try {
+      // 1. Verify QR code
       const isValid = await verifyQRCode(qrContent);
       if (!isValid) {
         setMessage({ type: 'error', text: 'QR Code không hợp lệ hoặc đã hết hạn!' });
         return;
       }
 
-      // Proceed with attendance
+      // 2. Verify GPS location (must be in range)
+      if (!location) {
+        setMessage({ type: 'error', text: 'Chưa xác định được vị trí. Vui lòng bật GPS và thử lại.' });
+        return;
+      }
+
+      if (!isInRange) {
+        setMessage({
+          type: 'error',
+          text: `QR Code hợp lệ nhưng bạn đang ở ngoài phạm vi văn phòng (${formatDistance(distance)} > ${OFFICE_LOCATION.radius}m)`
+        });
+        return;
+      }
+
+      // 3. Proceed with attendance
       await handleAttendance('QR Code');
     } catch (err) {
       setMessage({ type: 'error', text: err.message });

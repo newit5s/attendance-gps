@@ -17,7 +17,19 @@ import { WORKING_HOURS } from '../constants/config';
 const COLLECTION = 'attendances';
 
 /**
+ * Helper: Lấy ngày local (không dùng UTC)
+ * ✅ Fixed: Sử dụng local timezone thay vì UTC
+ */
+const getLocalDateString = (date = new Date()) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`; // YYYY-MM-DD in local timezone
+};
+
+/**
  * Tạo bản ghi chấm công
+ * ✅ Fixed: Sử dụng local timezone
  * @param {object} data - {userId, userName, type, method, location, distance, deviceId}
  * @returns {Promise<string>} Document ID
  */
@@ -28,7 +40,7 @@ export const createAttendance = async (data) => {
       ...data,
       status: 'success',
       timestamp: Timestamp.now(),
-      date: now.toISOString().split('T')[0], // YYYY-MM-DD
+      date: getLocalDateString(now), // Use local timezone
       month: now.getMonth() + 1,
       year: now.getFullYear()
     });
@@ -91,13 +103,14 @@ export const getAllAttendances = async (limitCount = 500) => {
 
 /**
  * Kiểm tra đã chấm công hôm nay chưa
+ * ✅ Fixed: Sử dụng local timezone
  * @param {string} userId
  * @param {string} type - 'check-in' hoặc 'check-out'
  * @returns {Promise<object|null>}
  */
 export const checkTodayAttendance = async (userId, type) => {
   try {
-    const today = new Date().toISOString().split('T')[0];
+    const today = getLocalDateString(); // Use local timezone
     const q = query(
       collection(db, COLLECTION),
       where('userId', '==', userId),
@@ -105,7 +118,7 @@ export const checkTodayAttendance = async (userId, type) => {
       where('type', '==', type)
     );
     const snapshot = await getDocs(q);
-    
+
     if (!snapshot.empty) {
       const doc = snapshot.docs[0];
       return {
