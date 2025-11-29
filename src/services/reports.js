@@ -72,6 +72,7 @@ export const getCompanyStats = async (month, year) => {
 
 /**
  * Lấy báo cáo theo phòng ban
+ * ✅ Fixed: Optimized N+1 query - fetch all attendances in one query
  * @param {string} department
  * @param {number} month
  * @param {number} year
@@ -82,11 +83,12 @@ export const getDepartmentReport = async (department, month, year) => {
     // Lấy users trong department
     const usersQuery = query(
       collection(db, 'users'),
-      where('department', '==', department)
+      where('department', '==', department),
+      where('status', '==', 'active')
     );
     const usersSnapshot = await getDocs(usersQuery);
     const userIds = usersSnapshot.docs.map(doc => doc.id);
-    
+
     if (userIds.length === 0) {
       return {
         department,
@@ -95,39 +97,36 @@ export const getDepartmentReport = async (department, month, year) => {
         stats: {}
       };
     }
-    
-    // Lấy attendances
-    const attendances = [];
-    for (const userId of userIds) {
-      const q = query(
-        collection(db, 'attendances'),
-        where('userId', '==', userId),
-        where('month', '==', month),
-        where('year', '==', year)
-      );
-      const snapshot = await getDocs(q);
-      snapshot.docs.forEach(doc => {
-        attendances.push({
-          id: doc.id,
-          ...doc.data(),
-          timestamp: doc.data().timestamp?.toDate()
-        });
-      });
-    }
-    
+
+    // ✅ Fixed: Fetch all attendances for the month/year in ONE query
+    // then filter by userIds in memory (more efficient than N queries)
+    const q = query(
+      collection(db, 'attendances'),
+      where('month', '==', month),
+      where('year', '==', year)
+    );
+    const snapshot = await getDocs(q);
+    const attendances = snapshot.docs
+      .map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        timestamp: doc.data().timestamp?.toDate()
+      }))
+      .filter(att => userIds.includes(att.userId)); // Filter in memory
+
     const checkIns = attendances.filter(a => a.type === 'check-in');
     let lateDays = 0;
-    
+
     checkIns.forEach(record => {
       if (isLateCheckIn(record.timestamp)) lateDays++;
     });
-    
+
     return {
       department,
       totalEmployees: userIds.length,
       totalCheckIns: checkIns.length,
       lateDays,
-      onTimeRate: checkIns.length > 0 
+      onTimeRate: checkIns.length > 0
         ? Math.round(((checkIns.length - lateDays) / checkIns.length) * 100)
         : 0,
       attendances
@@ -227,6 +226,7 @@ export const getEmployeeReport = async (userId, month, year) => {
 
 /**
  * Lấy bảng xếp hạng nhân viên tốt nhất
+ * ✅ Fixed: Optimized N+1 query - fetch all data once, process in memory
  * @param {number} month
  * @param {number} year
  * @param {number} limit
@@ -234,35 +234,67 @@ export const getEmployeeReport = async (userId, month, year) => {
  */
 export const getTopEmployees = async (month, year, limitCount = 10) => {
   try {
-    // Lấy tất cả users
-    const usersSnapshot = await getDocs(collection(db, 'users'));
+    // ✅ Fetch users and attendances in parallel (2 queries instead of N+1)
+    const [usersSnapshot, attendancesSnapshot] = await Promise.all([
+      getDocs(query(collection(db, 'users'), where('status', '==', 'active'))),
+      getDocs(query(
+        collection(db, 'attendances'),
+        where('month', '==', month),
+        where('year', '==', year)
+      ))
+    ]);
+
     const users = usersSnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
     }));
-    
-    // Tính stats cho mỗi user
+
+    const allAttendances = attendancesSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+      timestamp: doc.data().timestamp?.toDate()
+    }));
+
+    // Group attendances by userId in memory
+    const attendancesByUser = {};
+    allAttendances.forEach(att => {
+      if (!attendancesByUser[att.userId]) {
+        attendancesByUser[att.userId] = [];
+      }
+      attendancesByUser[att.userId].push(att);
+    });
+
+    // Calculate stats for each user
     const rankings = [];
-    
+
     for (const user of users) {
-      if (user.role === 'admin') continue; // Bỏ qua admin
-      
-      const report = await getEmployeeReport(user.id, month, year);
-      
+      if (user.role === 'admin') continue; // Skip admin
+
+      const userAttendances = attendancesByUser[user.id] || [];
+      const checkIns = userAttendances.filter(a => a.type === 'check-in');
+
+      let lateDays = 0;
+      checkIns.forEach(record => {
+        if (isLateCheckIn(record.timestamp)) lateDays++;
+      });
+
+      const totalDays = checkIns.length;
+      const onTimeDays = totalDays - lateDays;
+
       rankings.push({
         userId: user.id,
         name: user.name,
         department: user.department,
-        totalDays: report.stats.totalDays,
-        onTimeDays: report.stats.onTimeDays,
-        lateDays: report.stats.lateDays,
-        onTimeRate: report.stats.totalDays > 0
-          ? Math.round((report.stats.onTimeDays / report.stats.totalDays) * 100)
+        totalDays,
+        onTimeDays,
+        lateDays,
+        onTimeRate: totalDays > 0
+          ? Math.round((onTimeDays / totalDays) * 100)
           : 0
       });
     }
-    
-    // Sắp xếp theo tỷ lệ đúng giờ và số ngày làm
+
+    // Sort by on-time rate and total days
     return rankings
       .sort((a, b) => {
         if (b.onTimeRate !== a.onTimeRate) return b.onTimeRate - a.onTimeRate;

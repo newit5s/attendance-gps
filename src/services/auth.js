@@ -1,16 +1,31 @@
 // src/services/auth.js
 // Authentication service
 
-import { 
-  signInWithEmailAndPassword, 
+import {
+  signInWithEmailAndPassword,
   signOut,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   updatePassword,
-  onAuthStateChanged
+  onAuthStateChanged,
+  getAuth
 } from 'firebase/auth';
 import { doc, setDoc, Timestamp } from 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
 import { auth, db } from './firebase';
+import { FIREBASE_CONFIG } from '../constants/config';
+
+// Secondary app for creating users without logging out admin
+let secondaryApp;
+let secondaryAuth;
+
+const getSecondaryAuth = () => {
+  if (!secondaryAuth) {
+    secondaryApp = initializeApp(FIREBASE_CONFIG, 'Secondary');
+    secondaryAuth = getAuth(secondaryApp);
+  }
+  return secondaryAuth;
+};
 
 /**
  * Đăng nhập với email và password
@@ -43,6 +58,7 @@ export const logoutUser = async () => {
 
 /**
  * Tạo tài khoản mới (chỉ admin được dùng)
+ * ✅ Fixed: Sử dụng secondary auth để không logout admin
  * @param {string} email
  * @param {string} password
  * @param {object} userData - {name, role, department, phone}
@@ -50,9 +66,11 @@ export const logoutUser = async () => {
  */
 export const createUser = async (email, password, userData) => {
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    // Sử dụng secondary auth instance để không logout admin hiện tại
+    const secAuth = getSecondaryAuth();
+    const userCredential = await createUserWithEmailAndPassword(secAuth, email, password);
     const uid = userCredential.user.uid;
-    
+
     // Lưu thông tin vào Firestore
     await setDoc(doc(db, 'users', uid), {
       ...userData,
@@ -61,7 +79,10 @@ export const createUser = async (email, password, userData) => {
       createdAt: Timestamp.now(),
       updatedAt: Timestamp.now()
     });
-    
+
+    // Sign out khỏi secondary auth
+    await signOut(secAuth);
+
     return uid;
   } catch (error) {
     console.error('Lỗi tạo tài khoản:', error);

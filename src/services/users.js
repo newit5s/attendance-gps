@@ -37,14 +37,20 @@ export const getUserData = async (uid) => {
 };
 
 /**
- * Lấy tất cả users
+ * Lấy tất cả users (chỉ active users)
+ * @param {boolean} includeDeleted - Include deleted users (default: false)
  * @returns {Promise<Array>}
  */
-export const getAllUsers = async () => {
+export const getAllUsers = async (includeDeleted = false) => {
   try {
-    const snapshot = await getDocs(
-      query(collection(db, COLLECTION), orderBy('name'))
-    );
+    let q = query(collection(db, COLLECTION), orderBy('name'));
+
+    // Filter out deleted users by default
+    if (!includeDeleted) {
+      q = query(collection(db, COLLECTION), where('status', '==', 'active'), orderBy('name'));
+    }
+
+    const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
@@ -56,7 +62,7 @@ export const getAllUsers = async () => {
 };
 
 /**
- * Lấy users theo department
+ * Lấy users theo department (chỉ active users)
  * @param {string} department
  * @returns {Promise<Array>}
  */
@@ -64,6 +70,7 @@ export const getUsersByDepartment = async (department) => {
   try {
     const q = query(
       collection(db, COLLECTION),
+      where('status', '==', 'active'),
       where('department', '==', department),
       orderBy('name')
     );
@@ -79,7 +86,7 @@ export const getUsersByDepartment = async (department) => {
 };
 
 /**
- * Lấy users theo role
+ * Lấy users theo role (chỉ active users)
  * @param {string} role
  * @returns {Promise<Array>}
  */
@@ -87,6 +94,7 @@ export const getUsersByRole = async (role) => {
   try {
     const q = query(
       collection(db, COLLECTION),
+      where('status', '==', 'active'),
       where('role', '==', role)
     );
     const snapshot = await getDocs(q);
@@ -119,15 +127,43 @@ export const updateUser = async (uid, data) => {
 };
 
 /**
- * Xóa user
+ * Xóa user (soft delete)
+ * ✅ Fixed: Soft delete thay vì hard delete, đánh dấu status='deleted'
+ * Note: Hard delete từ Firebase Auth yêu cầu Cloud Function với Admin SDK
  * @param {string} uid
  * @returns {Promise<void>}
  */
 export const deleteUser = async (uid) => {
   try {
-    await deleteDoc(doc(db, COLLECTION, uid));
+    // Soft delete: đánh dấu status='deleted' thay vì xóa document
+    await updateDoc(doc(db, COLLECTION, uid), {
+      status: 'deleted',
+      deletedAt: Timestamp.now(),
+      updatedAt: Timestamp.now()
+    });
+    // TODO: Implement Cloud Function để hard delete từ Firebase Auth
+    // Client-side không thể delete user khỏi Firebase Auth
   } catch (error) {
     console.error('Lỗi xóa user:', error);
+    throw error;
+  }
+};
+
+/**
+ * Hard delete user (for future Cloud Function implementation)
+ * Hàm này cần được implement trong Cloud Function với Admin SDK
+ * @param {string} uid
+ * @returns {Promise<void>}
+ */
+export const hardDeleteUser = async (uid) => {
+  try {
+    // 1. Delete từ Firestore
+    await deleteDoc(doc(db, COLLECTION, uid));
+    // 2. Delete từ Firebase Auth (requires Cloud Function)
+    // await admin.auth().deleteUser(uid);
+    throw new Error('Hard delete yêu cầu Cloud Function. Hiện tại chỉ hỗ trợ soft delete.');
+  } catch (error) {
+    console.error('Lỗi hard delete user:', error);
     throw error;
   }
 };
@@ -172,13 +208,14 @@ export const getAllDepartments = async () => {
 };
 
 /**
- * Lấy danh sách managers
+ * Lấy danh sách managers (chỉ active users)
  * @returns {Promise<Array>}
  */
 export const getManagers = async () => {
   try {
     const q = query(
       collection(db, COLLECTION),
+      where('status', '==', 'active'),
       where('role', 'in', ['manager', 'admin'])
     );
     const snapshot = await getDocs(q);
