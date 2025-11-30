@@ -1,10 +1,45 @@
 # CHANGELOG - Hệ thống Chấm công GPS & QR Code
 
-## 📌 Trạng thái hiện tại: v2.0.3
+## 📌 Trạng thái hiện tại: v2.1.0
 
 ---
 
-## [v2.0.3] - 2025-11-29 ✅ CURRENT
+## [v2.1.0] - 2025-11-29 ✅ CURRENT - ALL PAGES COMPLETE! 🎉
+
+### Mục tiêu
+Complete ALL missing page UIs - Full-stack application ready!
+
+### ✅ Đã hoàn thành (9 pages)
+
+**Employee Pages (4 pages)**
+- ✅ DeviceRegister - Device fingerprinting management
+- ✅ LeaveRequest - Leave request with file upload
+- ✅ LeaveBalance - Leave balance with charts
+- ✅ LateEarly - Late/early request management
+
+**Manager Pages (2 pages)**
+- ✅ Approval - Unified approval workflow
+- ✅ TeamReport - Team statistics and reports
+
+**Admin Pages (2 pages)**
+- ✅ Devices - Device management with block/unblock
+- ✅ Settings - System configuration
+
+**Common Pages (1 page)**
+- ✅ Notifications - Notification center
+
+**Updated Files**
+- App.js - Routing for all 16 pages
+- Sidebar.jsx - Organized menu with sections
+- Fixed screen global linting error
+
+### 📊 Build Status
+- ✅ Build: SUCCESS
+- ✅ Bundle: 306.27 kB (gzipped)
+
+---
+
+## [v2.0.3] - 2025-11-29
 
 ### Mục tiêu
 Code quality improvements and clean build
@@ -132,11 +167,11 @@ Hoàn thiện core modules từ v2.0.0 refactor
 ## 🗓️ Roadmap
 
 ```
-v2.0.1 ✅ Done       - Core modules complete (38 files)
-v2.0.2 ✅ Done       - Bug fixes (3 critical + 3 medium) + 7 services
-v2.0.3 ✅ Current    - Code quality improvements, clean build
-v2.1.0 🔲 Next       - UI implementation (9 missing pages)
-v2.2.0 🔲 Planned    - Manager features (approval, team reports)
-v2.3.0 🔲 Planned    - Admin+ (devices, settings)
-v2.4.0 🔲 Future     - PWA, multi-branch, email, i18n
+v2.0.1 ✅ Done       - Core modules (38 files)
+v2.0.2 ✅ Done       - Bug fixes + 7 services
+v2.0.3 ✅ Done       - Code quality
+v2.1.0 ✅ Current    - ALL 16 pages! 🎉
+v2.2.0 🔲 Next       - Production deployment
+v2.3.0 🔲 Planned    - PWA, offline mode
+v2.4.0 🔲 Future     - Mobile app, i18n
 ```
