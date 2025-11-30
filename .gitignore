@@ -31,3 +31,9 @@ yarn-error.log*
 
 # OS
 Thumbs.db
+
+# Firebase
+firebase-service-account.json
+.firebaserc
+.firebase/
+src/constants/config.js.backup.*

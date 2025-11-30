@@ -1,0 +1,58 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+             firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    function isImageFile() {
+      return request.resource.contentType.matches('image/.*');
+    }
+
+    function isValidSize() {
+      // Max 5MB
+      return request.resource.size < 5 * 1024 * 1024;
+    }
+
+    // Avatar images
+    match /avatars/{userId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() &&
+                     request.auth.uid == userId &&
+                     isImageFile() &&
+                     isValidSize();
+      allow delete: if isAuthenticated() &&
+                      (request.auth.uid == userId || isAdmin());
+    }
+
+    // QR code images
+    match /qr-codes/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin() && isImageFile();
+      allow delete: if isAdmin();
+    }
+
+    // Export files
+    match /exports/{fileName} {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Temporary uploads
+    match /temp/{userId}/{fileName} {
+      allow read, write: if isAuthenticated() &&
+                           request.auth.uid == userId &&
+                           isValidSize();
+      allow delete: if isAuthenticated() &&
+                      request.auth.uid == userId;
+    }
+  }
+}
