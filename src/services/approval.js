@@ -3,8 +3,7 @@
 
 import {
   getDoc,
-  doc,
-  Timestamp
+  doc
 } from 'firebase/firestore';
 import { db } from './firebase';
 import {
@@ -23,7 +22,6 @@ import {
   notifyLateEarlyApproved,
   notifyLateEarlyRejected
 } from './notification';
-import { getUserData } from './users';
 
 /**
  * Get all pending approvals (leave + late/early requests)
