@@ -5,10 +5,8 @@ import {
   collection,
   addDoc,
   getDocs,
-  getDoc,
   doc,
   updateDoc,
-  deleteDoc,
   query,
   where,
   orderBy,
@@ -30,7 +28,7 @@ export const generateDeviceFingerprint = async () => {
   components.push(navigator.userAgent);
 
   // Screen resolution
-  components.push(`${screen.width}x${screen.height}x${screen.colorDepth}`);
+  components.push(`${window.screen.width}x${window.screen.height}x${window.screen.colorDepth}`);
 
   // Timezone
   components.push(Intl.DateTimeFormat().resolvedOptions().timeZone);
