@@ -65,15 +65,15 @@ const Sidebar = ({ currentView, setCurrentView }) => {
   };
 
   return (
-    <aside className="w-64 bg-white shadow-lg h-screen sticky top-0 overflow-y-auto">
-      <div className="p-6 border-b border-gray-100">
+    <aside className="w-64 bg-white dark:bg-gray-800 shadow-lg h-screen sticky top-0 overflow-y-auto border-r border-gray-200 dark:border-gray-700 transition-colors duration-300">
+      <div className="p-6 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-blue-600 dark:bg-blue-500 rounded-lg flex items-center justify-center">
             <Clock className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h2 className="font-bold text-gray-800">Chấm công</h2>
-            <p className="text-xs text-gray-500">v2.1.0</p>
+            <h2 className="font-bold text-gray-800 dark:text-white">Chấm công</h2>
+            <p className="text-xs text-gray-500 dark:text-gray-400">v2.1.0</p>
           </div>
         </div>
       </div>
@@ -94,8 +94,8 @@ const Sidebar = ({ currentView, setCurrentView }) => {
                       className={`
                         w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm
                         ${isActive
-                          ? 'bg-blue-600 text-white shadow-md'
-                          : 'text-gray-600 hover:bg-gray-50'
+                          ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md'
+                          : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                         }
                       `}
                     >
@@ -112,7 +112,7 @@ const Sidebar = ({ currentView, setCurrentView }) => {
         {/* Employee Section */}
         {sections.employee.length > 0 && (
           <div className="mb-6">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 mb-2">
+            <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-4 mb-2">
               Nhân viên
             </p>
             <ul className="space-y-1">
@@ -127,8 +127,8 @@ const Sidebar = ({ currentView, setCurrentView }) => {
                       className={`
                         w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm
                         ${isActive
-                          ? 'bg-blue-600 text-white shadow-md'
-                          : 'text-gray-600 hover:bg-gray-50'
+                          ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md'
+                          : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                         }
                       `}
                     >
@@ -145,7 +145,7 @@ const Sidebar = ({ currentView, setCurrentView }) => {
         {/* Manager Section */}
         {sections.manager.length > 0 && (
           <div className="mb-6">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 mb-2">
+            <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-4 mb-2">
               Quản lý
             </p>
             <ul className="space-y-1">
@@ -160,8 +160,8 @@ const Sidebar = ({ currentView, setCurrentView }) => {
                       className={`
                         w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm
                         ${isActive
-                          ? 'bg-blue-600 text-white shadow-md'
-                          : 'text-gray-600 hover:bg-gray-50'
+                          ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md'
+                          : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                         }
                       `}
                     >
@@ -178,7 +178,7 @@ const Sidebar = ({ currentView, setCurrentView }) => {
         {/* Admin Section */}
         {sections.admin.length > 0 && (
           <div className="mb-6">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 mb-2">
+            <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-4 mb-2">
               Quản trị
             </p>
             <ul className="space-y-1">
@@ -193,8 +193,8 @@ const Sidebar = ({ currentView, setCurrentView }) => {
                       className={`
                         w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm
                         ${isActive
-                          ? 'bg-blue-600 text-white shadow-md'
-                          : 'text-gray-600 hover:bg-gray-50'
+                          ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md'
+                          : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                         }
                       `}
                     >
@@ -210,8 +210,8 @@ const Sidebar = ({ currentView, setCurrentView }) => {
       </nav>
 
       {/* Footer */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100">
-        <div className="text-center text-xs text-gray-400">
+      <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+        <div className="text-center text-xs text-gray-400 dark:text-gray-500">
           © 2025 Attendance System
         </div>
       </div>

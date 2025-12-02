@@ -36,20 +36,20 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 dark:from-blue-900 dark:to-purple-900 flex items-center justify-center p-4 transition-colors duration-300">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md p-8 transition-colors duration-300">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 bg-blue-600 dark:bg-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <Clock className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-800">Chấm công GPS & QR</h1>
-          <p className="text-gray-500 mt-2">Đăng nhập để tiếp tục</p>
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Chấm công GPS & QR</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-2">Đăng nhập để tiếp tục</p>
         </div>
 
         {/* Error message */}
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+          <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg mb-6">
             {error}
           </div>
         )}
@@ -88,7 +88,7 @@ const Login = () => {
         </form>
 
         {/* Footer */}
-        <div className="mt-8 text-center text-sm text-gray-500">
+        <div className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
           <p>Hệ thống quản lý chấm công v2.0</p>
           <p className="mt-1">© 2025 - GPS & QR Code Attendance</p>
         </div>
