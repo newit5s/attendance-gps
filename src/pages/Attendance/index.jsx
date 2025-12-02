@@ -162,31 +162,31 @@ const Attendance = () => {
       <Card title="Trạng thái hôm nay">
         <div className="flex items-center justify-center gap-8 py-4">
           <div className="text-center">
-            <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-2 ${hasCheckedIn ? 'bg-green-100' : 'bg-gray-100'}`}>
+            <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-2 transition-colors duration-300 ${hasCheckedIn ? 'bg-green-100 dark:bg-green-900' : 'bg-gray-100 dark:bg-gray-700'}`}>
               {hasCheckedIn ? (
-                <CheckCircle className="w-8 h-8 text-green-600" />
+                <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
               ) : (
-                <XCircle className="w-8 h-8 text-gray-400" />
+                <XCircle className="w-8 h-8 text-gray-400 dark:text-gray-500" />
               )}
             </div>
-            <p className="font-medium">Check-in</p>
-            <p className="text-sm text-gray-500">
+            <p className="font-medium text-gray-800 dark:text-white">Check-in</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               {todayCheckIn ? new Date(todayCheckIn.timestamp).toLocaleTimeString('vi-VN') : '--:--'}
             </p>
           </div>
 
-          <div className="w-16 h-0.5 bg-gray-200"></div>
+          <div className="w-16 h-0.5 bg-gray-200 dark:bg-gray-700"></div>
 
           <div className="text-center">
-            <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-2 ${hasCheckedOut ? 'bg-green-100' : 'bg-gray-100'}`}>
+            <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-2 transition-colors duration-300 ${hasCheckedOut ? 'bg-green-100 dark:bg-green-900' : 'bg-gray-100 dark:bg-gray-700'}`}>
               {hasCheckedOut ? (
-                <CheckCircle className="w-8 h-8 text-green-600" />
+                <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
               ) : (
-                <XCircle className="w-8 h-8 text-gray-400" />
+                <XCircle className="w-8 h-8 text-gray-400 dark:text-gray-500" />
               )}
             </div>
-            <p className="font-medium">Check-out</p>
-            <p className="text-sm text-gray-500">
+            <p className="font-medium text-gray-800 dark:text-white">Check-out</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               {todayCheckOut ? new Date(todayCheckOut.timestamp).toLocaleTimeString('vi-VN') : '--:--'}
             </p>
           </div>
@@ -195,7 +195,7 @@ const Attendance = () => {
 
       {/* Message */}
       {message.text && (
-        <div className={`p-4 rounded-lg ${message.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
+        <div className={`p-4 rounded-lg transition-colors duration-300 ${message.type === 'success' ? 'bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800' : 'bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800'}`}>
           {message.text}
         </div>
       )}
@@ -207,46 +207,46 @@ const Attendance = () => {
             <button
               onClick={() => setMethod('gps')}
               className={`flex-1 p-4 rounded-xl border-2 transition-all ${
-                method === 'gps' 
-                  ? 'border-blue-500 bg-blue-50' 
-                  : 'border-gray-200 hover:border-gray-300'
+                method === 'gps'
+                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-950 dark:border-blue-600'
+                  : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
               }`}
             >
-              <MapPin className={`w-8 h-8 mx-auto mb-2 ${method === 'gps' ? 'text-blue-600' : 'text-gray-400'}`} />
-              <p className="font-medium">GPS</p>
+              <MapPin className={`w-8 h-8 mx-auto mb-2 ${method === 'gps' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`} />
+              <p className="font-medium text-gray-800 dark:text-white">GPS</p>
             </button>
 
             <button
               onClick={() => setMethod('qr')}
               className={`flex-1 p-4 rounded-xl border-2 transition-all ${
-                method === 'qr' 
-                  ? 'border-blue-500 bg-blue-50' 
-                  : 'border-gray-200 hover:border-gray-300'
+                method === 'qr'
+                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-950 dark:border-blue-600'
+                  : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
               }`}
             >
-              <QrCode className={`w-8 h-8 mx-auto mb-2 ${method === 'qr' ? 'text-blue-600' : 'text-gray-400'}`} />
-              <p className="font-medium">QR Code</p>
+              <QrCode className={`w-8 h-8 mx-auto mb-2 ${method === 'qr' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`} />
+              <p className="font-medium text-gray-800 dark:text-white">QR Code</p>
             </button>
           </div>
 
           {/* GPS Method */}
           {method === 'gps' && (
             <div className="space-y-4">
-              <div className="bg-gray-50 p-4 rounded-lg">
+              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg transition-colors duration-300">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-600">Khoảng cách đến văn phòng:</span>
-                  <button onClick={refreshGPS} className="p-1 hover:bg-gray-200 rounded">
-                    <RefreshCw className={`w-4 h-4 ${gpsLoading ? 'animate-spin' : ''}`} />
+                  <span className="text-gray-600 dark:text-gray-300">Khoảng cách đến văn phòng:</span>
+                  <button onClick={refreshGPS} className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition-colors">
+                    <RefreshCw className={`w-4 h-4 text-gray-600 dark:text-gray-300 ${gpsLoading ? 'animate-spin' : ''}`} />
                   </button>
                 </div>
-                <p className={`text-2xl font-bold ${isInRange ? 'text-green-600' : 'text-red-600'}`}>
+                <p className={`text-2xl font-bold ${isInRange ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                   {distance !== null ? formatDistance(distance) : 'Đang xác định...'}
                 </p>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                   Phạm vi cho phép: {OFFICE_LOCATION.radius}m
                 </p>
                 {gpsError && (
-                  <p className="text-sm text-red-500 mt-2">{gpsError}</p>
+                  <p className="text-sm text-red-500 dark:text-red-400 mt-2">{gpsError}</p>
                 )}
               </div>
 
@@ -298,9 +298,9 @@ const Attendance = () => {
       {hasCheckedOut && (
         <Card>
           <div className="text-center py-8">
-            <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-gray-800">Hoàn thành chấm công hôm nay!</h3>
-            <p className="text-gray-500 mt-2">Bạn đã check-in và check-out thành công.</p>
+            <CheckCircle className="w-16 h-16 text-green-500 dark:text-green-400 mx-auto mb-4" />
+            <h3 className="text-xl font-bold text-gray-800 dark:text-white">Hoàn thành chấm công hôm nay!</h3>
+            <p className="text-gray-500 dark:text-gray-400 mt-2">Bạn đã check-in và check-out thành công.</p>
           </div>
         </Card>
       )}

@@ -5,7 +5,7 @@ import Sidebar from './Sidebar';
 
 const MainLayout = ({ children, currentView, setCurrentView }) => {
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex transition-colors duration-300">
       <Sidebar currentView={currentView} setCurrentView={setCurrentView} />
       <div className="flex-1 flex flex-col">
         <Header />

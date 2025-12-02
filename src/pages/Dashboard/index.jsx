@@ -20,14 +20,14 @@ const Dashboard = () => {
   return (
     <div className="space-y-6">
       {/* Welcome */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-6 text-white">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-700 dark:to-purple-800 rounded-2xl p-6 text-white transition-colors duration-300">
         <h2 className="text-2xl font-bold">Xin chào, {userData?.name}!</h2>
         <p className="mt-2 opacity-90">
-          {new Date().toLocaleDateString('vi-VN', { 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
+          {new Date().toLocaleDateString('vi-VN', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
           })}
         </p>
       </div>
@@ -36,40 +36,40 @@ const Dashboard = () => {
       <Card title="Trạng thái hôm nay" subtitle="Thông tin chấm công trong ngày">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Check-in */}
-          <div className={`p-4 rounded-xl border-2 ${todayCheckIn ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-gray-50'}`}>
+          <div className={`p-4 rounded-xl border-2 transition-colors duration-300 ${todayCheckIn ? 'border-green-200 bg-green-50 dark:border-green-900 dark:bg-green-950' : 'border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800'}`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Check-in</p>
-                <p className="text-2xl font-bold text-gray-800">
+                <p className="text-sm text-gray-500 dark:text-gray-400">Check-in</p>
+                <p className="text-2xl font-bold text-gray-800 dark:text-white">
                   {todayCheckIn ? formatTime(todayCheckIn.timestamp) : '--:--:--'}
                 </p>
                 {todayCheckIn && (
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     {todayCheckIn.method} • {todayCheckIn.distance}m
                   </p>
                 )}
               </div>
-              <div className={`p-3 rounded-full ${todayCheckIn ? 'bg-green-500' : 'bg-gray-300'}`}>
+              <div className={`p-3 rounded-full ${todayCheckIn ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'}`}>
                 <CheckCircle className="w-6 h-6 text-white" />
               </div>
             </div>
           </div>
 
           {/* Check-out */}
-          <div className={`p-4 rounded-xl border-2 ${todayCheckOut ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-gray-50'}`}>
+          <div className={`p-4 rounded-xl border-2 transition-colors duration-300 ${todayCheckOut ? 'border-green-200 bg-green-50 dark:border-green-900 dark:bg-green-950' : 'border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800'}`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Check-out</p>
-                <p className="text-2xl font-bold text-gray-800">
+                <p className="text-sm text-gray-500 dark:text-gray-400">Check-out</p>
+                <p className="text-2xl font-bold text-gray-800 dark:text-white">
                   {todayCheckOut ? formatTime(todayCheckOut.timestamp) : '--:--:--'}
                 </p>
                 {todayCheckOut && (
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     {todayCheckOut.method} • {todayCheckOut.distance}m
                   </p>
                 )}
               </div>
-              <div className={`p-3 rounded-full ${todayCheckOut ? 'bg-green-500' : 'bg-gray-300'}`}>
+              <div className={`p-3 rounded-full ${todayCheckOut ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'}`}>
                 <CheckCircle className="w-6 h-6 text-white" />
               </div>
             </div>
@@ -114,19 +114,19 @@ const Dashboard = () => {
         <Card title="Thông tin cá nhân">
           <div className="space-y-3">
             <div className="flex justify-between">
-              <span className="text-gray-500">Họ tên</span>
-              <span className="font-medium">{userData?.name}</span>
+              <span className="text-gray-500 dark:text-gray-400">Họ tên</span>
+              <span className="font-medium text-gray-800 dark:text-white">{userData?.name}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-500">Email</span>
-              <span className="font-medium">{userData?.email}</span>
+              <span className="text-gray-500 dark:text-gray-400">Email</span>
+              <span className="font-medium text-gray-800 dark:text-white">{userData?.email}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-500">Phòng ban</span>
-              <span className="font-medium">{userData?.department || 'N/A'}</span>
+              <span className="text-gray-500 dark:text-gray-400">Phòng ban</span>
+              <span className="font-medium text-gray-800 dark:text-white">{userData?.department || 'N/A'}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-500">Vai trò</span>
+              <span className="text-gray-500 dark:text-gray-400">Vai trò</span>
               <Badge variant={userData?.role === 'admin' ? 'primary' : 'default'}>
                 {userData?.role === 'admin' ? 'Quản trị viên' : 'Nhân viên'}
               </Badge>
@@ -135,17 +135,17 @@ const Dashboard = () => {
         </Card>
 
         <Card title="Hướng dẫn nhanh">
-          <ul className="space-y-3 text-sm text-gray-600">
+          <ul className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
             <li className="flex items-start gap-2">
-              <span className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold">1</span>
+              <span className="w-6 h-6 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold">1</span>
               <span>Vào mục <strong>Chấm công</strong> để check-in/check-out</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold">2</span>
+              <span className="w-6 h-6 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold">2</span>
               <span>Chọn phương thức: <strong>GPS</strong> hoặc <strong>QR Code</strong></span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold">3</span>
+              <span className="w-6 h-6 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold">3</span>
               <span>Xem lịch sử tại mục <strong>Lịch sử</strong></span>
             </li>
           </ul>

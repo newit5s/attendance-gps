@@ -20,29 +20,29 @@ const StatCard = ({
   };
 
   const bgColors = {
-    blue: 'bg-blue-50',
-    green: 'bg-green-50',
-    yellow: 'bg-yellow-50',
-    red: 'bg-red-50',
-    purple: 'bg-purple-50',
-    indigo: 'bg-indigo-50'
+    blue: 'bg-blue-50 dark:bg-blue-900/30',
+    green: 'bg-green-50 dark:bg-green-900/30',
+    yellow: 'bg-yellow-50 dark:bg-yellow-900/30',
+    red: 'bg-red-50 dark:bg-red-900/30',
+    purple: 'bg-purple-50 dark:bg-purple-900/30',
+    indigo: 'bg-indigo-50 dark:bg-indigo-900/30'
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-colors duration-300">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium text-gray-500">{title}</p>
-          <p className="text-3xl font-bold text-gray-800 mt-1">{value}</p>
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{title}</p>
+          <p className="text-3xl font-bold text-gray-800 dark:text-white mt-1">{value}</p>
           {subtitle && (
-            <p className="text-sm text-gray-500 mt-1">{subtitle}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{subtitle}</p>
           )}
           {trend && (
-            <div className={`flex items-center mt-2 ${trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
+            <div className={`flex items-center mt-2 ${trend === 'up' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
               <span className="text-sm font-medium">
                 {trend === 'up' ? '↑' : '↓'} {trendValue}
               </span>
-              <span className="text-xs text-gray-500 ml-1">so với tháng trước</span>
+              <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">so với tháng trước</span>
             </div>
           )}
         </div>
